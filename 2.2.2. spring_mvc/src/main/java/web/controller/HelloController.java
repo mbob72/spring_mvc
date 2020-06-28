@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import web.models.Car;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,24 @@ public class HelloController {
 		messages.add("5.2.0 version by sep'19 ");
 		model.addAttribute("messages", messages);
 		return "index";
+	}
+
+	@GetMapping(value = "/cars")
+	public String carsList(
+			@RequestParam(value = "locale", required = false) String locale,
+			ModelMap model
+	) {
+		if (locale != null && locale.equals("en")) {
+			model.addAttribute("header", "Cars list:");
+		} else {
+			model.addAttribute("header", "Список автомобилей");
+		}
+		List<Car> cars = new ArrayList<>();
+		cars.add(new Car("Car1", 1999));
+		cars.add(new Car("Car2", 1997));
+		cars.add(new Car("Car3", 1995));
+		model.addAttribute("cars", cars);
+		return "cars";
 	}
 	
 }
